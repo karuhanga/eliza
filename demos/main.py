@@ -20,5 +20,6 @@ def runner():
 
 
 if __name__ == "__main__":
-    keyboard.add_hotkey('`', runner, suppress=True)
+    print("Started")
+    keyboard.add_hotkey('`', runner)
     keyboard.wait('ctrl+esc')

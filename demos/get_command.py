@@ -1,4 +1,5 @@
 import speech_recognition as sr
+from httplib2 import ServerNotFoundError
 
 from utils.constants import COMMAND_SCOPE
 
@@ -6,11 +7,14 @@ from utils.constants import COMMAND_SCOPE
 def get_command(command_scope):
     r = sr.Recognizer()
     with sr.Microphone() as source:
+        print("Listening...")
         try:
             audio = r.listen(source, timeout=2, phrase_time_limit=5)
         except sr.WaitTimeoutError:
             print("Wait timeout")
             return
+
+    print("Recognizing...")
 
     try:
         return r.recognize_google_cloud(audio, language="en-KE", preferred_phrases=command_scope).strip()
@@ -18,6 +22,8 @@ def get_command(command_scope):
         print("Google Cloud Speech could not understand audio")
     except sr.RequestError as e:
         print("Could not request results from Google Cloud Speech service; {0}".format(e))
+    except ServerNotFoundError:
+        print("You are offline at the moment")
 
 
 if __name__ == "__main__":

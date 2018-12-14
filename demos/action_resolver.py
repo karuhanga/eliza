@@ -3,6 +3,27 @@ import time
 import keyboard
 import subprocess
 
+from utils.constants import SLEEP_ACTION
+
+ACTIONS = {
+    # app specific commands todo customise these from context
+    "save":         "ctrl+s",
+    "close":        "alt+F4",
+    "pause":        "space",
+    # system commands
+    "lock":         "win+l",
+    "minimise":     "win+down",
+    "maximise":     "win+up",
+    "undo":         "ctrl+z",
+    "cut":          "ctrl+x",
+    "copy":         "ctrl+c",
+    "paste":        "ctrl+v",
+    "desktop":      "ctrl+d",
+    "switch":       "win+tab",
+    "screenshot":   "prtsc",
+    # todo account for other commands
+}
+
 
 def launch_application(application, extras=None):
     extras = [] if extras is None else extras
@@ -42,6 +63,11 @@ def perform_complex_action(command):
             windows_action()
             time.sleep(1)
             keyboard.write(query)
+        elif action == "elisa" or action == "eliza":  # todo find universal way of accounting for such errors
+            cmd = " ".join(command_list)
+            cmd = cmd.strip()
+            if cmd == "sleep":
+                run_keyboard_action(SLEEP_ACTION)
     # todo add other actions
 
 
@@ -72,31 +98,8 @@ def windows_action(combo=None):
 
 
 def resolve_simple_action(command):
-    if command == "save":
-        return "ctrl+s"
-    elif command == "close":
-        return "alt+F4"
-    elif command == "pause":
-        return "space"
-    elif command == "lock":
-        return "win+l"
-    elif command == "minimise":
-        return "win+down"
-    elif command == "maximise":
-        return "win+up"
-    elif command == "undo":
-        return "ctrl+z"
-    elif command == "cut":
-        return "ctrl+x"
-    elif command == "copy":
-        return "ctrl+c"
-    elif command == "paste":
-        return "ctrl+v"
-    elif command == "desktop":
-        return "ctrl+d"
-    elif command == "switch":
-        return "win+tab"
-    elif command == "screenshot":
-        return "prtsc"
-
-    # todo account for other commands
+    try:
+        return ACTIONS[command]
+    except KeyError:
+        print("No action for {} command".format(command))
+        return
