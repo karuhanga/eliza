@@ -18,7 +18,7 @@ ACTIONS = {
     "cut":          "ctrl+x",
     "copy":         "ctrl+c",
     "paste":        "ctrl+v",
-    "desktop":      "ctrl+d",
+    "desktop":      "win+d",
     "switch":       "win+tab",
     "screenshot":   "prtsc",
     # todo account for other commands
