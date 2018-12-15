@@ -1,15 +1,18 @@
+import subprocess
+import threading
 import time
 
 import keyboard
-import subprocess
 
-from utils.constants import SLEEP_ACTION
+from utils.constants import SLEEP_ACTION, MUSIC_PATH
+from utils.utils import find_file, get_home_path
 
 ACTIONS = {
     # app specific commands todo customise these from context
     "save":         "ctrl+s",
     "close":        "alt+F4",
     "pause":        "space",
+    "play": "space",
     # system commands
     "lock":         "win+l",
     "minimise":     "win+down",
@@ -25,20 +28,23 @@ ACTIONS = {
 }
 
 
-def launch_application(application, extras=None):
-    extras = [] if extras is None else extras
-    if "firefox" in application:
-        args = ["sudo", "-u", "karuhanga", "firefox"]
-        args.extend(extras)
-        subprocess.call(args)
-    elif "chrome" in application or "chromium" in application:
-        subprocess.call(["sudo", "-u", "karuhanga", "chromium-browser"])
-    elif "vlc" in application:
-        subprocess.call(["sudo", "-u", "karuhanga", "vlc"])
-    elif "sublime" in application:
-        subprocess.call(["sudo", "-u", "karuhanga", "subl"])
-    elif "files" in application:
-        subprocess.call(["sudo", "-u", "karuhanga", "nautilus"])
+def launch_application(application, extra_args=None):
+    def runner():
+        extras = [] if extra_args is None else extra_args
+        if "firefox" in application:
+            args = ["su", "karuhanga", "-c", "firefox"]
+            args.extend(extras)
+            subprocess.call(args)
+        elif "chrome" in application or "chromium" in application:
+            subprocess.call(["su", "karuhanga", "-c", "chromium-browser"])
+        elif "vlc" in application:
+            subprocess.call(["su", "karuhanga", "-c", "vlc"])
+        elif "sublime" in application:
+            subprocess.call(["su", "karuhanga", "-c", "subl"])
+        elif "files" in application:
+            subprocess.call(["su", "karuhanga", "-c", "nautilus"])
+
+    threading.Thread(target=runner).start()
 
 
 def perform_complex_action(command):
@@ -48,7 +54,7 @@ def perform_complex_action(command):
         command_list = command.split(" ")
         action = command_list[0]
         command_list = command_list[1:]
-        if action == "open":
+        if action == "launch":
             application = " ".join(command_list)
             application = application.strip()
             launch_application(application)
@@ -68,17 +74,44 @@ def perform_complex_action(command):
             cmd = cmd.strip()
             if cmd == "sleep":
                 run_keyboard_action(SLEEP_ACTION)
+        elif action == "play":
+            def runner():
+                track = " ".join(command_list)
+                track = track.strip()
+                options = find_file(track, MUSIC_PATH, "mp3")
+                if len(options):
+                    subprocess.call(["xdg-open", options[0]])
+                else:
+                    options = find_file('*' + track + '*', MUSIC_PATH, "mp3")
+                    if len(options):
+                        subprocess.call(["xdg-open", options[0]])
+
+            threading.Thread(target=runner).start()
+        elif action == "open":  # todo make this a persistence based search(too slow)
+            file = " ".join(command_list)
+            file = file.strip()
+            options = find_file(file, get_home_path(), "*")
+            print(options)
+            if len(options):
+                subprocess.call(["xdg-open", options[0]])
+            else:
+                options = find_file('*' + file + '*', get_home_path(), "*")
+                if len(options):
+                    subprocess.call(["xdg-open", options[0]])
+        else:
+            perform_complex_action("search " + command)
     # todo add other actions
 
 
 def run_keyboard_action(action):
-    if "win+" in action:
-        action = action.replace("win+", "")
-        windows_action(action)
-    elif "prtsc" in action:
-        keyboard.send(99)
-    else:
-        keyboard.send(action)
+    if action:
+        if "win+" in action:
+            action = action.replace("win+", "")
+            windows_action(action)
+        elif "prtsc" in action:
+            keyboard.send(99)
+        else:
+            keyboard.send(action)
 
 
 def perform_action(command):
@@ -102,4 +135,5 @@ def resolve_simple_action(command):
         return ACTIONS[command]
     except KeyError:
         print("No action for {} command".format(command))
+        perform_complex_action("search " + command)
         return
