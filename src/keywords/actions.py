@@ -1,6 +1,8 @@
+from time import ctime
+
+
 from libs.snowboy.snowboydecoder import play_audio_file, DETECT_DONG
-from src.actions.actions import find, play, open_action as _open, sleep, \
-    select_all
+from src.actions.actions import find, play, open_action as _open
 from src.actions.base import launch_application, perform_keyboard_action
 from src.relays.listen import listen
 from src.utils.utils import log
@@ -35,20 +37,20 @@ def search_action():
 
 
 def find_action():
+    log("find")
     find(listen("What would you like to find?"))
 
 
-def play_action():
+def music_action():
+    log("music")
     play(listen("What song would you like to listen to?"))
 
 
 def open_action():
+    log("open")
     _open(listen("Which file would you like to open?"))
 
 
-def sleep_action():
-    sleep()
-
-
-def select_all_action():
-    select_all()
+def time_action():
+    log("time")
+    print(ctime())

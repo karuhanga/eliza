@@ -4,7 +4,6 @@ import signal
 
 class HotWordDetector:
     interrupted = False
-    sensitivity = 0.5
     routines = {}
     detector = None
 
@@ -24,7 +23,7 @@ class HotWordDetector:
         print(message)
         self.detector = snowboydecoder.HotwordDetector(
             [routine['model'] for routine in self.routines],
-            sensitivity=self.sensitivity
+            sensitivity=[routine['sensitivity'] for routine in self.routines]
         )
         self.detector.start(
             detected_callback=[routine['callback'] for routine in self.routines],

@@ -4,8 +4,8 @@ import time
 
 import keyboard
 
-from src.actions.base import windows_action, run_keyboard_action
-from src.utils.constants import get_music_path, SLEEP_ACTION
+from src.actions.base import windows_action
+from src.utils.constants import get_music_path
 from src.utils.utils import find_file, get_home_path
 
 
@@ -43,11 +43,3 @@ def open_action(file):
                 subprocess.call(["xdg-open", options[0]])
 
     threading.Thread(target=lambda: runner(file)).start()
-
-
-def sleep():
-    run_keyboard_action(SLEEP_ACTION)
-
-
-def select_all():
-    run_keyboard_action("ctrl+a")
