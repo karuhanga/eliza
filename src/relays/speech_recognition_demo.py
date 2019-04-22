@@ -1,6 +1,6 @@
 import speech_recognition as sr
 
-from demos.custom_recognizers import RecognizerWithKaldi
+from src.relays.custom_recognizers import RecognizerWithKaldi
 
 r = RecognizerWithKaldi()
 # obtain audio from the microphone

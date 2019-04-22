@@ -1,6 +1,7 @@
 import glob
+from threading import Thread
 
-from utils.constants import HOME_PATH
+from src.utils.constants import HOME_PATH
 
 
 def find_file(name, path, file_type):
@@ -15,3 +16,14 @@ def find_file(name, path, file_type):
 
 def get_home_path():
     return HOME_PATH
+
+
+def threaded(fn):
+    """To use as decorator to make a function call threaded.
+    Needs import
+    from threading import Thread"""
+    def wrapper(*args, **kwargs):
+        thread = Thread(target=fn, args=args, kwargs=kwargs)
+        thread.start()
+        return thread
+    return wrapper

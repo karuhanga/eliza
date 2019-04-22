@@ -1,8 +1,8 @@
 import keyboard
 
-from demos.action_resolver import perform_action
-from demos.get_command import get_command
-from utils.constants import COMMAND_SCOPE
+from src.actions.base import perform_keyboard_action
+from src.relays import get_command
+from src.utils.constants import COMMAND_SCOPE
 
 in_the_middle_of_something = False
 
@@ -15,7 +15,7 @@ def runner():
     command = get_command(command_scope=COMMAND_SCOPE)
     if command:
         print("Running action: {}".format(command))
-        perform_action(command)
+        perform_keyboard_action(command)
     in_the_middle_of_something = False
 
 

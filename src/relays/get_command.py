@@ -1,13 +1,15 @@
 import speech_recognition as sr
 from httplib2 import ServerNotFoundError
 
-from utils.constants import COMMAND_SCOPE
+from src.utils.constants import COMMAND_SCOPE
 
 
-def get_command(command_scope):
+def get_command(command_scope=None, message="Listening..."):
+    if command_scope is None:
+        command_scope = []
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Listening...")
+        print(message)
         try:
             audio = r.listen(source, timeout=2, phrase_time_limit=5)
         except sr.WaitTimeoutError:
