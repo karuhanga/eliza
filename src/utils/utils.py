@@ -27,3 +27,13 @@ def threaded(fn):
         thread.start()
         return thread
     return wrapper
+
+
+def debug():
+    return True
+
+
+def log(message):
+    if debug():
+        print(message)
+

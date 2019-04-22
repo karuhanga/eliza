@@ -1,0 +1,14 @@
+These models are not universal yet. The ones shown here are still personal, waiting on full training data to become good enough for universal use;
+- save
+- close
+- pause
+- play
+- lock
+- select_all
+- minimise
+- maximize
+- undo
+- cut
+- copy
+- paste
+- desktop

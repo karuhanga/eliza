@@ -41,21 +41,21 @@ def build_detector(stop_trigger, stop_action):
     routines.append(build_routine(stop_trigger, stop_action))
     # quick action routines
     routines.extend(build_quick_action_routines(ACTIONS.keys()))
-    # open
-    routines.append(build_routine("launch", launch_action))
-    # search
-    routines.append(build_routine("search", search_action))
-    # find
-    routines.append(build_routine("find", find_action))
-    # play
-    routines.append(build_routine("play", play_action))
-    # open
-    routines.append(build_routine("open", open_action))
-    # sleep
-    routines.append(build_routine("sleep", sleep_action))
-    # select all
-    routines.append(
-        build_routine("select_all", select_all_action)
-    )
+    # # open
+    # routines.append(build_routine("launch", launch_action))
+    # # search
+    # routines.append(build_routine("search", search_action))
+    # # find
+    # routines.append(build_routine("find", find_action))
+    # # play
+    # routines.append(build_routine("play", play_action))
+    # # open
+    # routines.append(build_routine("open", open_action))
+    # # sleep
+    # routines.append(build_routine("sleep", sleep_action))
+    # # select all
+    # routines.append(
+    #     build_routine("select_all", select_all_action)
+    # )
 
     return HotWordDetector(routines)

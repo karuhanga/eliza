@@ -1,24 +1,32 @@
+from libs.snowboy.snowboydecoder import play_audio_file, DETECT_DONG
 from src.actions.actions import find, play, open_action as _open, sleep, \
     select_all
 from src.actions.base import launch_application, perform_keyboard_action
 from src.relays.listen import listen
+from src.utils.utils import log
 
 
-def snow_boy_action():
-    print("Snowboy!")
+def eliza_action():
+    play_audio_file(DETECT_DONG)
+    print("Hey!")
 
 
 def resolve_keyword_action(action):
-    return lambda: perform_keyboard_action(action)
+    def to_call():
+        log(action)
+        perform_keyboard_action(action)
+    return to_call
 
 
 def launch_action():
+    log("launch")
     status = launch_application(listen("Which application would you like to open?"))
     if status:
         perform_keyboard_action("switch")
 
 
 def search_action():
+    log("search")
     launch_application(
         "firefox",
         extra_args=["--search", listen("What would you like to search for?")]

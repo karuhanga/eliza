@@ -1,4 +1,5 @@
-from src.keywords.actions import snow_boy_action
+from libs.snowboy.snowboydecoder import play_audio_file
+from src.keywords.actions import eliza_action
 from src.keywords.main import build_detector, build_wake_up_detector
 
 wake_up_detector = None
@@ -9,12 +10,13 @@ def listen_for_wake_up_word():
     global wake_up_detector
     if detector:
         detector.terminate()
-    wake_up_detector = build_wake_up_detector("snowboy", listen_for_keyword)
+    wake_up_detector = build_wake_up_detector("eliza", listen_for_keyword)
     wake_up_detector.listen()
 
 
 # todo: We might choose to do this asynchronously after, say, a minute
 def stop_keyword_capture():
+    play_audio_file()
     print("Cool.")
     listen_for_wake_up_word()
 
@@ -22,8 +24,8 @@ def stop_keyword_capture():
 def listen_for_keyword():
     global detector
     wake_up_detector.terminate()
-    snow_boy_action()
-    detector = build_detector("snowboy", stop_keyword_capture)
+    eliza_action()
+    detector = build_detector("goodbye", stop_keyword_capture)
     try:
         detector.listen("Waiting for action...")
     except Exception as e:

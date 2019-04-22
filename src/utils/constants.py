@@ -6,16 +6,16 @@ ACTIONS = {
     "play":         "space",
     # system commands
     "lock":         "win+l",
-    "select_all":   "ctrl+a",
-    "minimise":     "win+down",
-    "maximise":     "win+up",
+    # "select_all":   "ctrl+a",#
+    "minimise":     "win+down",#
+    # "maximize":     "win+up",
     "undo":         "ctrl+z",
     "cut":          "ctrl+x",
     "copy":         "ctrl+c",
     "paste":        "ctrl+v",
     "desktop":      "win+d",
-    "switch":       "win+tab",
-    "screenshot":   "prtsc",
+    "screenshot":   "prtsc",#
+    "switch":       "win+tab",#
     # todo account for other commands
 }
 
