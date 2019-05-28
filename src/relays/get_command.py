@@ -22,8 +22,8 @@ def get_command(command_scope=None, message="Listening..."):
     print("Recognizing...")
 
     try:
-        # return r.recognize_google_cloud(audio, language="en-KE", preferred_phrases=command_scope).strip()
-        return r.recognize_deep_speech(audio)
+        print(r.recognize_deep_speech(audio))
+        return r.recognize_google_cloud(audio, language="en-KE", preferred_phrases=command_scope).strip()
     except sr.UnknownValueError:
         print("Google Cloud Speech could not understand audio")
     except sr.RequestError as e:
