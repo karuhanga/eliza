@@ -1,13 +1,16 @@
 import speech_recognition as sr
 from httplib2 import ServerNotFoundError
 
+from src.relays.custom_recognizers import RecognizerWithDeepSpeech
 from src.utils.constants import COMMAND_SCOPE
+
+
+r = RecognizerWithDeepSpeech()
 
 
 def get_command(command_scope=None, message="Listening..."):
     if command_scope is None:
         command_scope = []
-    r = sr.Recognizer()
     with sr.Microphone() as source:
         print(message)
         try:
@@ -19,7 +22,8 @@ def get_command(command_scope=None, message="Listening..."):
     print("Recognizing...")
 
     try:
-        return r.recognize_google_cloud(audio, language="en-KE", preferred_phrases=command_scope).strip()
+        # return r.recognize_google_cloud(audio, language="en-KE", preferred_phrases=command_scope).strip()
+        return r.recognize_deep_speech(audio)
     except sr.UnknownValueError:
         print("Google Cloud Speech could not understand audio")
     except sr.RequestError as e:
