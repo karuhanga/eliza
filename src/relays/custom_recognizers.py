@@ -2,7 +2,14 @@ import json
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from deepspeech import Model as DeepSpeechModel
+from deepspeech.client import N_FEATURES, N_CONTEXT, BEAM_WIDTH, LM_ALPHA, \
+    LM_BETA
+
 from speech_recognition import Recognizer, AudioData, RequestError, UnknownValueError
+
+from libs.deep_speech.constants import MODEL_PATH, ALPHABET_PATH, \
+    LANGUAGE_MODEL, TRIE
 
 
 class RecognizerWithKaldi(Recognizer):
@@ -56,3 +63,25 @@ class RecognizerWithKaldi(Recognizer):
             if "utterance" in entry:
                 return entry["utterance"]
         raise UnknownValueError()  # no transcriptions available
+
+
+class RecognizerWithDeepSpeech(Recognizer):
+    def __init__(self):
+        super(RecognizerWithDeepSpeech, self).__init__()
+        self.deep_speech_model = DeepSpeechModel(MODEL_PATH, N_FEATURES, N_CONTEXT, ALPHABET_PATH, BEAM_WIDTH)
+        self.deep_speech_model.enableDecoderWithLM(ALPHABET_PATH, LANGUAGE_MODEL, TRIE, LM_ALPHA, LM_BETA)
+
+    def recognize_deep_speech(self, audio_data):
+        """
+        Performs speech recognition on ``audio_data`` (an ``AudioData`` instance), using the Mozilla Deep Speech Library.
+        """
+        assert isinstance(audio_data, AudioData), "Data must be audio data"
+
+        wav_data = audio_data.get_wav_data(
+            # audio samples should be at least 16 kHz
+            convert_rate=None if audio_data.sample_rate >= 16000 else 16000,
+            # audio samples should be at least 16-bit
+            convert_width=None if audio_data.sample_width >= 2 else 2
+        )
+
+        return self.deep_speech_model.stt(wav_data, wav_data.getframerate())
