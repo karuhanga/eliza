@@ -1,7 +1,10 @@
+import io
 import json
+import wave
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+import numpy
 from deepspeech import Model as DeepSpeechModel
 from deepspeech.client import N_FEATURES, N_CONTEXT, BEAM_WIDTH, LM_ALPHA, \
     LM_BETA
@@ -71,17 +74,41 @@ class RecognizerWithDeepSpeech(Recognizer):
         self.deep_speech_model = DeepSpeechModel(MODEL_PATH, N_FEATURES, N_CONTEXT, ALPHABET_PATH, BEAM_WIDTH)
         self.deep_speech_model.enableDecoderWithLM(ALPHABET_PATH, LANGUAGE_MODEL, TRIE, LM_ALPHA, LM_BETA)
 
+    def get_wav_data(self, audio_data, convert_rate=None, convert_width=None):
+        raw_data = audio_data.get_raw_data(convert_rate, convert_width)
+        sample_rate = audio_data.sample_rate if convert_rate is None else convert_rate
+        sample_width = audio_data.sample_width if convert_width is None else convert_width
+
+        # generate the WAV file contents
+        with io.BytesIO() as wav_file:
+            with wave.open(wav_file, "wb") as wav_writer:
+                try:  # note that we can't use context manager, since that was only added in Python 3.4
+                    wav_writer.setframerate(sample_rate)
+                    wav_writer.setsampwidth(sample_width)
+                    wav_writer.setnchannels(1)
+                    wav_writer.writeframes(raw_data)
+                    wav_file.seek(0)
+                finally:  # make sure resources are cleaned up
+                    wav_writer.close()
+
+            with wave.open(wav_file, 'rb') as wav_reader:
+                audio = numpy.frombuffer(wav_reader.readframes(wav_reader.getnframes()),
+                        numpy.int16)
+                frame_rate = wav_reader.getframerate()
+
+        return frame_rate, audio
+
     def recognize_deep_speech(self, audio_data):
         """
         Performs speech recognition on ``audio_data`` (an ``AudioData`` instance), using the Mozilla Deep Speech Library.
         """
         assert isinstance(audio_data, AudioData), "Data must be audio data"
-
-        wav_data = audio_data.get_wav_data(
+        frame_rate, audio = self.get_wav_data(
+            audio_data,
             # audio samples should be at least 16 kHz
             convert_rate=None if audio_data.sample_rate >= 16000 else 16000,
             # audio samples should be at least 16-bit
             convert_width=None if audio_data.sample_width >= 2 else 2
         )
 
-        return self.deep_speech_model.stt(wav_data, wav_data.getframerate())
+        return self.deep_speech_model.stt(audio, frame_rate)

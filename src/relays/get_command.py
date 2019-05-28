@@ -14,7 +14,7 @@ def get_command(command_scope=None, message="Listening..."):
     with sr.Microphone() as source:
         print(message)
         try:
-            audio = r.listen(source, timeout=2, phrase_time_limit=5)
+            audio = r.listen(source, timeout=2, phrase_time_limit=10)
         except sr.WaitTimeoutError:
             print("Wait timeout")
             return

@@ -88,4 +88,4 @@ fabric.properties
 
 env/*
 **/libs/snowboy/*
-**/libs/deepspeech/*
+**/libs/deep_speech/*
