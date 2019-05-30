@@ -106,7 +106,7 @@ class RecognizerWithDeepSpeech(Recognizer):
         frame_rate, audio = self.get_wav_data(
             audio_data,
             # audio samples should be at least 16 kHz
-            convert_rate=None if audio_data.sample_rate >= 16000 else 16000,
+            convert_rate=16000,
             # audio samples should be at least 16-bit
             convert_width=None if audio_data.sample_width >= 2 else 2
         )
