@@ -1,6 +1,6 @@
 import keyboard
 
-from src.two_relay.actions.base import perform_keyboard_action
+from src.two_relay.actions import perform_keyboard_action
 from src.two_relay import get_command
 from src.utils.constants import COMMAND_SCOPE
 

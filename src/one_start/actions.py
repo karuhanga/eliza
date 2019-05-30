@@ -2,8 +2,8 @@ from time import ctime
 
 
 from libs.snowboy.snowboydecoder import play_audio_file, DETECT_DONG
-from src.two_relay.actions.actions import find, play, open_action as _open
-from src.two_relay.actions.base import launch_application, perform_keyboard_action
+from src.two_relay.actions import find, play, open_action as _open, \
+    launch_application, perform_keyboard_action
 from src.deprecated_demos.listen import listen
 from src.utils.utils import log
 
