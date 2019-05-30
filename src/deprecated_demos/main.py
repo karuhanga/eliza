@@ -1,7 +1,7 @@
 import keyboard
 
-from src.actions.base import perform_keyboard_action
-from src.relays import get_command
+from src.two_relay.actions.base import perform_keyboard_action
+from src.two_relay import get_command
 from src.utils.constants import COMMAND_SCOPE
 
 in_the_middle_of_something = False

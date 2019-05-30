@@ -1,15 +1,15 @@
 import os
 
-from src.keywords.actions import resolve_keyword_action, launch_action, \
+from src.one_start.actions import resolve_keyword_action, launch_action, \
     search_action, find_action, music_action, open_action, time_action
-from src.keywords.snowboy import HotWordDetector
+from src.one_start.snowboy import HotWordDetector
 from src.utils.constants import ACTIONS
 
 
 def build_path(param):
     # todo we can do something fancy here like first check for a .pmdl
     #   before falling back to a .umdl
-    return os.path.abspath("src/keywords/data/" + param + ".umdl")
+    return os.path.abspath("src/one_start/data/" + param + ".umdl")
 
 
 def build_quick_action_routines(actions):

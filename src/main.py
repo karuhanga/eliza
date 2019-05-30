@@ -1,6 +1,6 @@
 from libs.snowboy.snowboydecoder import play_audio_file
-from src.keywords.actions import eliza_action
-from src.keywords.main import build_detector, build_wake_up_detector
+from src.one_start.actions import eliza_action
+from src.one_start.main import build_detector, build_wake_up_detector
 
 wake_up_detector = None
 detector = None

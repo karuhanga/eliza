@@ -1,7 +1,7 @@
 import speech_recognition as sr
 from httplib2 import ServerNotFoundError
 
-from src.relays.custom_recognizers import RecognizerWithDeepSpeech
+from src.two_relay.custom_recognizers import RecognizerWithDeepSpeech
 from src.utils.constants import COMMAND_SCOPE
 
 

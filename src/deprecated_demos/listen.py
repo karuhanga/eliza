@@ -1,4 +1,4 @@
-from src.relays.get_command import get_command
+from src.two_relay.get_command import get_command
 
 
 def listen(message):

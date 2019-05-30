@@ -4,7 +4,7 @@ import time
 
 import keyboard
 
-from src.actions.base import windows_action
+from src.two_relay.actions.base import windows_action
 from src.utils.constants import get_music_path
 from src.utils.utils import find_file, get_home_path
 
