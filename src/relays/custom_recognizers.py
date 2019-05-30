@@ -82,14 +82,11 @@ class RecognizerWithDeepSpeech(Recognizer):
         # generate the WAV file contents
         with io.BytesIO() as wav_file:
             with wave.open(wav_file, "wb") as wav_writer:
-                try:  # note that we can't use context manager, since that was only added in Python 3.4
-                    wav_writer.setframerate(sample_rate)
-                    wav_writer.setsampwidth(sample_width)
-                    wav_writer.setnchannels(1)
-                    wav_writer.writeframes(raw_data)
-                    wav_file.seek(0)
-                finally:  # make sure resources are cleaned up
-                    wav_writer.close()
+                wav_writer.setframerate(sample_rate)
+                wav_writer.setsampwidth(sample_width)
+                wav_writer.setnchannels(1)
+                wav_writer.writeframes(raw_data)
+                wav_file.seek(0)
 
             with wave.open(wav_file, 'rb') as wav_reader:
                 audio = numpy.frombuffer(wav_reader.readframes(wav_reader.getnframes()),
