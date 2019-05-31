@@ -2,6 +2,7 @@ import subprocess
 import threading
 import time
 
+import delegator
 import keyboard
 
 from src.utils.constants import get_music_path, ACTIONS
@@ -59,10 +60,11 @@ def launch_application(application, extra_args=None):
         elif "vlc" in application:
             subprocess.call(["su", "karuhanga", "-c", "vlc"])
         elif "sublime" in application:
-            subprocess.call(["su", "karuhanga", "-c", "subl"])
+            subprocess.call(["subl"])
         elif "files" in application:
             subprocess.call(["su", "karuhanga", "-c", "nautilus"])
 
+    print("Launching " + application)
     threading.Thread(target=runner).start()
     return True
 

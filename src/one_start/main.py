@@ -52,6 +52,6 @@ def build_detector(stop_trigger, stop_action):
     # open
     routines.append(build_routine("open", open_action))
     # time
-    routines.append(build_routine("time", time_action, sensitivity=0.6))
+    routines.append(build_routine("time", time_action, sensitivity=0.5))
 
     return HotWordDetector(routines)

@@ -5,13 +5,16 @@ from src.two_relay.custom_recognizers import RecognizerWithDeepSpeech
 from src.utils.constants import COMMAND_SCOPE
 
 
-r = RecognizerWithDeepSpeech()
+r = None
 
 
 def get_command(command_scope=None, message="Listening..."):
+    global r
+    if not r:
+        r = RecognizerWithDeepSpeech()
     if command_scope is None:
         command_scope = []
-    with sr.Microphone() as source:
+    with sr.Microphone(sample_rate=16000) as source:
         print(message)
         try:
             audio = r.listen(source, timeout=5, phrase_time_limit=5)

@@ -26,10 +26,16 @@ class HotWordDetector:
             sensitivity=[routine['sensitivity'] for routine in self.routines]
         )
         self.detector.start(
-            detected_callback=[routine['callback'] for routine in self.routines],
+            detected_callback=[lambda: self.cleanup_wrapper(routine['callback']) for routine in self.routines],
             interrupt_check=self.interrupt_callback,
             sleep_time=0.03
         )
 
     def terminate(self):
         self.detector.terminate()
+
+    def cleanup_wrapper(self, action):
+        self.terminate()
+        action()
+        from src.main import listen_for_wake_up_word
+        listen_for_wake_up_word()

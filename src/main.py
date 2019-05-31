@@ -26,12 +26,7 @@ def listen_for_keyword():
     wake_up_detector.terminate()
     eliza_action()
     detector = build_detector("goodbye", stop_keyword_capture)
-    try:
-        detector.listen("Waiting for action...")
-    except Exception as e:
-        print("Issue: " + str(e))
-    finally:
-        listen_for_wake_up_word()
+    detector.listen("Waiting for action...")
 
 
 if __name__ == "__main__":
