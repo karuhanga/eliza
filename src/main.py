@@ -7,7 +7,7 @@ detector = None
 
 
 def listen_for_wake_up_word():
-    global wake_up_detector
+    global wake_up_detector, detector
     if detector:
         detector.terminate()
     wake_up_detector = build_wake_up_detector("eliza", listen_for_keyword)
@@ -22,8 +22,9 @@ def stop_keyword_capture():
 
 
 def listen_for_keyword():
-    global detector
-    wake_up_detector.terminate()
+    global detector, wake_up_detector
+    if wake_up_detector:
+        wake_up_detector.terminate()
     eliza_action()
     detector = build_detector("goodbye", stop_keyword_capture)
     detector.listen("Waiting for action...")

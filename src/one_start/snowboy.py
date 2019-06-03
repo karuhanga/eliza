@@ -37,5 +37,5 @@ class HotWordDetector:
     def cleanup_wrapper(self, action):
         self.terminate()
         action()
-        from src.main import listen_for_wake_up_word
-        listen_for_wake_up_word()
+        from src.main import listen_for_keyword
+        listen_for_keyword()
