@@ -19,7 +19,7 @@ def build_quick_action_routines(actions):
     ]
 
 
-def build_routine(name, callback, sensitivity=0.5):
+def build_routine(name, callback, sensitivity=0.4):
     return {
             "name": name,
             "model": build_path(name),
@@ -39,10 +39,9 @@ def build_detector(stop_trigger, stop_action):
     routines = []
     # stop routine
     routines.append(build_routine(stop_trigger, stop_action))
-    # quick action routines
-    routines.extend(build_quick_action_routines(ACTIONS.keys()))
-    # open
+    # launch
     routines.append(build_routine("launch", launch_action))
+    routines.append(build_routine("launch_app", launch_action))
     # search
     routines.append(build_routine("search", search_action))
     # find
@@ -51,7 +50,10 @@ def build_detector(stop_trigger, stop_action):
     routines.append(build_routine("music", music_action))
     # open
     routines.append(build_routine("open", open_action))
+    routines.append(build_routine("open_file", open_action))
     # time
-    routines.append(build_routine("time", time_action, sensitivity=0.5))
+    routines.append(build_routine("time", time_action))
+    # quick action routines
+    routines.extend(build_quick_action_routines(ACTIONS.keys()))
 
     return HotWordDetector(routines)

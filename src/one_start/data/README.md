@@ -12,3 +12,5 @@ These models are not universal yet. The ones shown here are still personal, wait
 - copy
 - paste
 - desktop
+- launch_app
+- open_file
