@@ -8,6 +8,8 @@ chatterbot-corpus==1.2.0
 cymem==2.0.2
 deepspeech==0.4.1
 delegator.py==0.1.1
+Django==2.2.2
+djangorestframework==3.9.4
 google-api-core==1.11.0
 google-api-python-client==1.7.9
 google-auth==1.6.3
@@ -143,6 +145,7 @@ six==1.12.0
 spacy==2.1.4
 SpeechRecognition==3.8.1
 SQLAlchemy==1.2.19
+sqlparse==0.3.0
 srsly==0.0.5
 thinc==7.0.4
 tqdm==4.32.1
