@@ -37,7 +37,7 @@ class ActionView(APIView):
                                       'nextStepNumber': next_step_number})
             else:
                 resolved_action['action']()
-                next_step_number = 0
+                next_step_number = 1
                 return Response(data={'activeActionId': action.pk,
                                       'message':
                                           resolved_action['last_n_prompts'][
@@ -69,7 +69,7 @@ class ActionView(APIView):
                                       'nextStepNumber': next_step_number})
             else:
                 resolved_action['action'](message)
-                next_step_number = 0
+                next_step_number = 1
                 return Response(data={'activeActionId': active_action_id,
                                       'message':
                                           resolved_action['last_n_prompts'][
