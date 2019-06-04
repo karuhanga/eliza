@@ -1,6 +1,6 @@
 import os
 
-from src.one_start.actions import resolve_keyword_action, launch_action, \
+from src.one_start.actions.speech import resolve_keyword_action, launch_action, \
     search_action, find_action, music_action, open_action, time_action
 from src.one_start.snowboy import HotWordDetector
 from src.utils.constants import ACTIONS

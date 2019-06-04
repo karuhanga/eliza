@@ -6,7 +6,7 @@ import delegator
 import keyboard
 
 from src.utils.constants import get_music_path, ACTIONS
-from src.utils.utils import find_file, get_home_path
+from src.utils.utils import find_file, get_home_path, threaded
 
 
 def find(query):
@@ -45,27 +45,29 @@ def open_action(file):
     threading.Thread(target=lambda: runner(file)).start()
 
 
+@threaded
 def launch_application(application, extra_args=None):
     if not application:
         return
 
-    def runner():
-        extras = [] if extra_args is None else extra_args
-        if "firefox" in application:
-            args = ["su", "karuhanga", "-c", "firefox"]
-            args.extend(extras)
-            subprocess.call(args)
-        elif "chrome" in application or "chromium" in application:
-            subprocess.call(["su", "karuhanga", "-c", "chromium-browser"])
-        elif "vlc" in application:
-            subprocess.call(["su", "karuhanga", "-c", "vlc"])
-        elif "sublime" in application:
-            subprocess.call(["subl"])
-        elif "files" in application:
-            subprocess.call(["su", "karuhanga", "-c", "nautilus"])
-
     print("Launching " + application)
-    threading.Thread(target=runner).start()
+
+    extras = [] if extra_args is None else extra_args
+    if "firefox" in application:
+        args = ["su", "karuhanga", "-c", "firefox"]
+        args.extend(extras)
+        subprocess.call(args)
+    elif "chrome" in application or "chromium" in application:
+        subprocess.call(["su", "karuhanga", "-c", "chromium-browser"])
+    elif "vlc" in application:
+        subprocess.call(["su", "karuhanga", "-c", "vlc"])
+    elif "sublime" in application:
+        delegator.run('subl')
+    elif "files" in application:
+        subprocess.call(["su", "karuhanga", "-c", "nautilus"])
+    else:
+        return False
+
     return True
 
 
