@@ -21,6 +21,7 @@ class ActionView(APIView):
             try:
                 resolved_action = actions[message]
             except KeyError:
+                # todo do some fancy speech analysis here
                 return Response(data={
                     'message': "I did not understand that. Please retry"},
                                 status=status.HTTP_404_NOT_FOUND)
@@ -36,12 +37,11 @@ class ActionView(APIView):
                                               step_number - 1],
                                       'nextStepNumber': next_step_number})
             else:
-                resolved_action['action']()
+                response = resolved_action['action']()
                 next_step_number = 1
                 return Response(data={'activeActionId': action.pk,
-                                      'message':
-                                          resolved_action['last_n_prompts'][
-                                              step_number - 1],
+                                      'message': response if response else
+                                      resolved_action['last_n_prompts'][step_number - 1],
                                       'nextStepNumber': next_step_number})
         else:
             try:
@@ -68,10 +68,9 @@ class ActionView(APIView):
                                               step_number - 1],
                                       'nextStepNumber': next_step_number})
             else:
-                resolved_action['action'](message)
+                response = resolved_action['action'](message)
                 next_step_number = 1
                 return Response(data={'activeActionId': active_action_id,
-                                      'message':
-                                          resolved_action['last_n_prompts'][
-                                              step_number - 1] + message + '...',
+                                      'message': response if response else
+                                          resolved_action['last_n_prompts'][step_number - 1] + message + '...',
                                       'nextStepNumber': next_step_number})

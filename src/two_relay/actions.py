@@ -5,7 +5,7 @@ import time
 import delegator
 import keyboard
 
-from src.utils.constants import get_music_path, ACTIONS
+from src.utils.constants import get_music_path, ACTIONS, get_launcher_command_action
 from src.utils.utils import find_file, get_home_path, threaded
 
 
@@ -53,19 +53,12 @@ def launch_application(application, extra_args=None):
     print("Launching " + application)
 
     extras = [] if extra_args is None else extra_args
-    if "firefox" in application:
-        args = ["su", "karuhanga", "-c", "firefox"]
-        args.extend(extras)
-        subprocess.call(args)
-    elif "chrome" in application or "chromium" in application:
-        subprocess.call(["su", "karuhanga", "-c", "chromium-browser"])
-    elif "vlc" in application:
-        subprocess.call(["su", "karuhanga", "-c", "vlc"])
-    elif "sublime" in application:
-        delegator.run('subl')
-    elif "files" in application:
-        subprocess.call(["su", "karuhanga", "-c", "nautilus"])
-    else:
+
+    try:
+        command_list = [get_launcher_command_action(application)]
+        command_list.extend(extras)
+        delegator.run(command_list)
+    except KeyError:
         return False
 
     return True

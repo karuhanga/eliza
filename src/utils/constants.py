@@ -20,6 +20,22 @@ ACTIONS = {
     # todo account for other commands
 }
 
+LAUNCHER_COMMANDS = {
+    "sublime": "subl",
+    "firefox": "firefox",
+    "chrome": "chromium-browser",
+    "vlc": "vlc",
+    "files": "nautilus",
+}
+
+
+def get_launcher_commands():
+    return LAUNCHER_COMMANDS.keys()
+
+
+def get_launcher_command_action(command):
+    return LAUNCHER_COMMANDS[command]
+
 
 ## Legacy
 COMMAND_SCOPE = (
