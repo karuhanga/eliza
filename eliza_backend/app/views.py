@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app.models import Action
+from .models import Action
 
 from src.deprecated_demos.listen import listen_async, end_listening_for_generic
 from src.main import listen_for_keyword_async, end_listening_for_keyword
@@ -83,7 +83,7 @@ class ActionView(APIView):
 
 
 class ListenForKeywordView(APIView):
-    def post(self):
+    def post(self, request):
         global generic_thread, keyword_thread
         # end_listening_for_keyword()
         if generic_thread: generic_thread._stop()
@@ -95,7 +95,7 @@ class ListenForKeywordView(APIView):
 
 
 class ListenForGenericView(APIView):
-    def post(self):
+    def post(self, request):
         global generic_thread, keyword_thread
         # end_listening_for_generic()
         if generic_thread: generic_thread._stop()

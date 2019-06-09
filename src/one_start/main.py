@@ -11,7 +11,8 @@ from src.utils.constants import ACTIONS
 def build_path(param):
     # todo we can do something fancy here like first check for a .pmdl
     #   before falling back to a .umdl
-    return os.path.abspath("src/one_start/data/" + param + ".umdl")
+    # return os.path.abspath("src/one_start/data/" + param + ".umdl")
+    return "/Users/karuhanga/Projects/FYProject/Elizet/src/one_start/data/" + param + ".umdl"
 
 
 def build_quick_action_routines(actions):

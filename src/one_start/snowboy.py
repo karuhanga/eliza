@@ -9,7 +9,7 @@ class HotWordDetector:
 
     def __init__(self, routines):
         # capture SIGINT signal, e.g., Ctrl+C
-        signal.signal(signal.SIGINT, self.signal_handler)
+        # signal.signal(signal.SIGINT, self.signal_handler)
         self.sensitivity = [0.5]*len(routines)
         self.routines = routines
 

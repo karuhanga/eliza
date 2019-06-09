@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from app.views import ActionView, ListenForKeywordView, ListenForGenericView
+from .views import ActionView, ListenForKeywordView, ListenForGenericView
 
 urlpatterns = [
     path('actions/<int:step_number>', ActionView.as_view()),

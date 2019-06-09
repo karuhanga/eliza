@@ -12,7 +12,14 @@ def listen(message):
 
 @threaded
 def listen_async():
-    socket(listen("blah"))
+    from src.one_start.actions.speech import eliza_action
+    eliza_action()
+    message = listen("blah")
+    print("Recognized: " + str(message))
+    if not message:
+        message = "Sorry, I didn't get that"
+        socket(message, True)()
+    socket(message)()
 
 
 def end_listening_for_generic():

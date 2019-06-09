@@ -8,6 +8,12 @@ from src.utils.constants import COMMAND_SCOPE
 r = None
 
 
+def init_recognizer():
+    global r
+    if not r:
+        r = RecognizerWithDeepSpeech()
+
+
 def get_command(command_scope=None, message="Listening..."):
     global r
     if not r:
