@@ -54,3 +54,16 @@ def open_action():
 def time_action():
     log("time")
     print(ctime())
+
+
+def what_can_you_do_action():
+    log("what can you do?")
+    print(
+        """
+            Hey, I'm Eliza. I can;\n
+            - Tell you the time.
+            - Open applications
+            - Play music
+            - Open files
+            - Find files and applications
+        """)

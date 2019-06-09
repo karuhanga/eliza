@@ -4,7 +4,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from app.models import Action
+
+from src.deprecated_demos.listen import listen_async, end_listening_for_generic
+from src.main import listen_for_keyword_async, end_listening_for_keyword
 from src.one_start.actions.text import actions
+
+generic_thread = None
+keyword_thread = None
 
 
 class ActionView(APIView):
@@ -74,3 +80,27 @@ class ActionView(APIView):
                                       'message': response if response else
                                           resolved_action['last_n_prompts'][step_number - 1] + message + '...',
                                       'nextStepNumber': next_step_number})
+
+
+class ListenForKeywordView(APIView):
+    def post(self):
+        global generic_thread, keyword_thread
+        # end_listening_for_keyword()
+        if generic_thread: generic_thread._stop()
+        if keyword_thread: keyword_thread._stop()
+        keyword_thread = listen_for_keyword_async()
+        return Response(
+            data={'message': "Listening for keyword..."},
+            status=status.HTTP_200_OK)
+
+
+class ListenForGenericView(APIView):
+    def post(self):
+        global generic_thread, keyword_thread
+        # end_listening_for_generic()
+        if generic_thread: generic_thread._stop()
+        if keyword_thread: keyword_thread._stop()
+        generic_thread = listen_async()
+        return Response(
+            data={'message': "Listening for generic..."},
+            status=status.HTTP_200_OK)

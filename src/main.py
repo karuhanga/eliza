@@ -1,6 +1,7 @@
 from libs.snowboy.snowboydecoder import play_audio_file
 from src.one_start.actions.speech import eliza_action
 from src.one_start.main import build_detector, build_wake_up_detector
+from src.utils.utils import threaded
 
 wake_up_detector = None
 detector = None
@@ -28,6 +29,16 @@ def listen_for_keyword():
     eliza_action()
     detector = build_detector("goodbye", stop_keyword_capture)
     detector.listen("Waiting for action...")
+
+
+# todo make sure only one is running at a time
+@threaded
+def listen_for_keyword_async():
+    listen_for_keyword()
+
+
+def end_listening_for_keyword():
+    return None  # todo
 
 
 if __name__ == "__main__":

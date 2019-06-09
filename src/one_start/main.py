@@ -1,7 +1,9 @@
 import os
 
+from app.socket import socket
 from src.one_start.actions.speech import resolve_keyword_action, launch_action, \
-    search_action, find_action, music_action, open_action, time_action
+    search_action, find_action, music_action, open_action, time_action, \
+    what_can_you_do_action
 from src.one_start.snowboy import HotWordDetector
 from src.utils.constants import ACTIONS
 
@@ -14,7 +16,7 @@ def build_path(param):
 
 def build_quick_action_routines(actions):
     return [
-        build_routine(action, resolve_keyword_action(action))
+        build_routine(action, socket(action))
         for action in actions
     ]
 
@@ -40,19 +42,21 @@ def build_detector(stop_trigger, stop_action):
     # stop routine
     routines.append(build_routine(stop_trigger, stop_action))
     # launch
-    routines.append(build_routine("launch", launch_action))
+    routines.append(build_routine("launch", socket("launch")))
     routines.append(build_routine("launch_app", launch_action))
     # search
-    routines.append(build_routine("search", search_action))
+    routines.append(build_routine("search", socket("search")))
     # find
-    routines.append(build_routine("find", find_action))
+    routines.append(build_routine("find", socket("find")))
     # music
-    routines.append(build_routine("music", music_action))
+    routines.append(build_routine("music", socket("music")))
     # open
-    routines.append(build_routine("open", open_action))
+    routines.append(build_routine("open", socket("open")))
     routines.append(build_routine("open_file", open_action))
     # time
-    routines.append(build_routine("time", time_action))
+    routines.append(build_routine("time", socket("time")))
+    # what_can_you_do_action
+    # routines.append(build_routine("what_can_you_do_action", what_can_you_do_action))
     # quick action routines
     routines.extend(build_quick_action_routines(ACTIONS.keys()))
 
