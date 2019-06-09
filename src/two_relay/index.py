@@ -2,7 +2,10 @@ import os
 
 from app.models import File
 
+from src.utils.utils import threaded
+
 HOME = '/Users/karuhanga/'
+indexing = False
 
 
 def run(starting_at=HOME):
@@ -23,6 +26,25 @@ def save_relevant():
     for dir in ['Documents', 'Videos', 'Downloads', 'Music']:
         print("Running on " + dir)
         run(HOME + dir)
+
+
+@threaded
+def save_relevant_async():
+    global indexing
+    indexing = True
+    save_relevant()
+    indexing = False
+
+
+def index():
+    global indexing
+    if indexing:
+        return False
+    return save_relevant_async()
+
+
+def delete_index():
+    File.objects.all().delete()
 
 
 if __name__ == '__main__':

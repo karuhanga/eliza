@@ -37,9 +37,26 @@ def find_action(file_name):
     find(file_name)
 
 
-def music_action(song):
+def music_action(file_name):
     log("music")
-    play(song)
+    from app.models import File
+    files = File.objects.filter(name__icontains=file_name).filter(name__icontains='.mp3')
+
+    if not files:
+        return file_name + " could not be found."
+
+    _open(files[0].path)
+
+
+def play_action(file_name):
+    log("music")
+    from app.models import File
+    files = File.objects.filter(name__icontains=file_name).filter(name__icontains='.mp4')
+
+    if not files:
+        return file_name + " could not be found."
+
+    _open(files[0].path)
 
 
 def open_action(file_name):
@@ -89,6 +106,8 @@ def build_actions():
     results = {
         'launch': build_action("launch", 2, ["Which application would you like to open?", "Launching "], launch_action),
         'open': build_action("open", 2, ["Which file would you like to open?", "Opening "], open_action),
+        'music': build_action("music", 2, ["Which track would you like to play?", "Playing "], music_action),
+        'play video': build_action("play video", 2, ["Which video would you like to play?", "Playing "], play_action),
         'search': build_action("search", 2, ["What would you like me to search for?", "Searching "], search_action),
         'time': build_action("time", 1, [""], time_action),
         'what can you do?': build_action("what can you do?", 1, [""], what_can_you_do_action),

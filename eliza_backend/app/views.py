@@ -4,6 +4,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from src.two_relay.index import index, delete_index
 from .serializers import AppSerializer
 from src.two_relay.give_answer import answer_question
 from .models import Action, App
@@ -159,3 +160,13 @@ def get_keyword_terminate():
 class AppsView(ListCreateAPIView):
     serializer_class = AppSerializer
     queryset = App.objects.all()
+
+
+class IndexView(APIView):
+    def post(self, request):
+        result = index()
+        return Response({'message': "Indexing started" if result else "Index update in progress..."})
+
+    def delete(self, request):
+        delete_index()
+        return Response({'message': "The search index was reset!"})
