@@ -19,7 +19,7 @@ class HotWordDetector:
     def interrupt_callback(self):
         return self.interrupted
 
-    def listen(self, message="Listening..."):
+    def listen(self, message="Snowboy is listening..."):
         print(message)
         self.detector = snowboydecoder.HotwordDetector(
             [routine['model'] for routine in self.routines],
@@ -37,5 +37,5 @@ class HotWordDetector:
     def cleanup_wrapper(self, action):
         self.terminate()
         action()
-        from src.main import listen_for_keyword
-        listen_for_keyword()
+        # from src.main import listen_for_keyword
+        # listen_for_keyword()

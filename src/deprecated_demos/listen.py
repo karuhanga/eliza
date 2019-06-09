@@ -20,6 +20,9 @@ def listen_async():
         message = "Sorry, I didn't get that"
         socket(message, True)()
     socket(message)()
+    from app.views import set_keyword_thread
+    from src.main import listen_for_wake_up_word_async
+    set_keyword_thread(listen_for_wake_up_word_async())
 
 
 def end_listening_for_generic():

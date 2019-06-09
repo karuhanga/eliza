@@ -11,7 +11,9 @@ def listen_for_wake_up_word():
     global wake_up_detector, detector
     if detector:
         detector.terminate()
-    wake_up_detector = build_wake_up_detector("eliza", listen_for_keyword)
+    from src.deprecated_demos.listen import listen_async
+    from app.views import set_generic_thread
+    wake_up_detector = build_wake_up_detector("eliza", lambda: set_generic_thread(listen_async()))
     wake_up_detector.listen()
 
 
@@ -35,6 +37,11 @@ def listen_for_keyword():
 @threaded
 def listen_for_keyword_async():
     listen_for_keyword()
+
+
+@threaded
+def listen_for_wake_up_word_async():
+    listen_for_wake_up_word()
 
 
 def end_listening_for_keyword():

@@ -13,6 +13,16 @@ generic_thread = None
 keyword_thread = None
 
 
+def stop_generic():
+    global generic_thread
+    if generic_thread: generic_thread._stop()
+
+
+def stop_keyword():
+    global keyword_thread
+    if keyword_thread: keyword_thread._stop()
+
+
 class ActionView(APIView):
     def post(self, request, step_number):
         data = request.data
@@ -98,9 +108,22 @@ class ListenForGenericView(APIView):
     def post(self, request):
         global generic_thread, keyword_thread
         # end_listening_for_generic()
-        if generic_thread: generic_thread._stop()
-        if keyword_thread: keyword_thread._stop()
+        stop_generic()
+        stop_keyword()
         generic_thread = listen_async()
         return Response(
             data={'message': "Listening for generic..."},
             status=status.HTTP_200_OK)
+
+
+# do not call in self
+def set_keyword_thread(new_keyword_thread):
+    global keyword_thread
+    if keyword_thread: keyword_thread._stop()
+    keyword_thread = new_keyword_thread
+
+
+def set_generic_thread(new_generic_thread):
+    global generic_thread
+    stop_generic()
+    generic_thread = new_generic_thread
