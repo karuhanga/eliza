@@ -10,3 +10,8 @@ class Action(models.Model):
 class App(models.Model):
     name = models.CharField(max_length=100)
     command = models.CharField(max_length=100)
+
+
+class File(models.Model):
+    path = models.CharField(max_length=10000, unique=True)
+    name = models.CharField(max_length=1000)

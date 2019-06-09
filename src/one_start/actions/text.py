@@ -44,7 +44,14 @@ def music_action(song):
 
 def open_action(file_name):
     log("open")
-    _open(file_name)
+    from app.models import File
+    # files = File.objects.filter(name__iexact=file_name)name__icontains
+    files = File.objects.filter(name__icontains=file_name)
+
+    if not files:
+        return file_name + " could not be found."
+
+    _open(files[0].path)
 
 
 def time_action():
@@ -81,6 +88,7 @@ def build_action(name, steps, last_n_prompts, action):
 def build_actions():
     results = {
         'launch': build_action("launch", 2, ["Which application would you like to open?", "Launching "], launch_action),
+        'open': build_action("open", 2, ["Which file would you like to open?", "Opening "], open_action),
         'search': build_action("search", 2, ["What would you like me to search for?", "Searching "], search_action),
         'time': build_action("time", 1, [""], time_action),
         'what can you do?': build_action("what can you do?", 1, [""], what_can_you_do_action),

@@ -6,7 +6,7 @@ import delegator
 import keyboard
 
 from src.utils.constants import get_music_path, ACTIONS, get_launcher_command_action
-from src.utils.utils import find_file, get_home_path, threaded
+from src.utils.utils import find_file, get_home_path, threaded, log
 
 
 def find(query):
@@ -30,19 +30,10 @@ def play(track):
     threading.Thread(target=lambda: runner(track)).start()
 
 
-def open_action(file):
-    def runner(file):
-        file = file.strip()
-        options = find_file(file, get_home_path(), "*")
-        print(options)
-        if len(options):
-            subprocess.call(["xdg-open", options[0]])
-        else:
-            options = find_file('*' + file + '*', get_home_path(), "*")
-            if len(options):
-                subprocess.call(["xdg-open", options[0]])
-
-    threading.Thread(target=lambda: runner(file)).start()
+@threaded
+def open_action(file_path):
+    log(file_path)
+    subprocess.call("open " + file_path, shell=True)
 
 
 @threaded
