@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from src.two_relay.give_answer import answer_question
 from .models import Action
 
 from src.deprecated_demos.listen import listen_async, end_listening_for_generic
@@ -44,10 +45,24 @@ class ActionView(APIView):
             try:
                 resolved_action = actions[message]
             except KeyError:
-                # todo do some fancy speech analysis here
-                return Response(data={
-                    'message': "I did not understand that. Please retry"},
-                                status=status.HTTP_404_NOT_FOUND)
+                response = None
+                try:
+                    response = answer_question(message)
+                except Exception as e:
+                    print(e)
+                    return Response(data={
+                        'message': "I did not understand that. Please retry"},
+                                    status=status.HTTP_404_NOT_FOUND)
+                print(response)
+                if response:
+                    next_step_number = 1
+                    return Response(data={'activeActionId': 0,
+                                          'message': response,
+                                          'nextStepNumber': next_step_number})
+                else:
+                    return Response(data={
+                        'message': "I did not understand that. Please retry"},
+                        status=status.HTTP_404_NOT_FOUND)
 
             action = Action(name=message, completed_step_number=step_number)
             action.save()
