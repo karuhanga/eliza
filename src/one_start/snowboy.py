@@ -17,7 +17,8 @@ class HotWordDetector:
         self.interrupted = True
 
     def interrupt_callback(self):
-        return self.interrupted
+        from app.views import get_keyword_terminate
+        return get_keyword_terminate()
 
     def listen(self, message="Snowboy is listening..."):
         print(message)
@@ -30,6 +31,7 @@ class HotWordDetector:
             interrupt_check=self.interrupt_callback,
             sleep_time=0.03
         )
+        self.terminate()
 
     def terminate(self):
         self.detector.terminate()

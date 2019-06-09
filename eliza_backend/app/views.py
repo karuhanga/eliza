@@ -11,16 +11,23 @@ from src.one_start.actions.text import actions
 
 generic_thread = None
 keyword_thread = None
+keyword_terminate = False
 
 
 def stop_generic():
+    print("1")
     global generic_thread
-    if generic_thread: generic_thread._stop()
+    if generic_thread and generic_thread.is_alive():
+        generic_thread.join()
 
 
 def stop_keyword():
-    global keyword_thread
-    if keyword_thread: keyword_thread._stop()
+    print("2")
+    global keyword_thread, keyword_terminate
+    if keyword_thread and keyword_thread.is_alive():
+        keyword_terminate = True
+        keyword_thread.join()
+        keyword_terminate = False
 
 
 class ActionView(APIView):
@@ -96,8 +103,8 @@ class ListenForKeywordView(APIView):
     def post(self, request):
         global generic_thread, keyword_thread
         # end_listening_for_keyword()
-        if generic_thread: generic_thread._stop()
-        if keyword_thread: keyword_thread._stop()
+        stop_generic()
+        stop_keyword()
         keyword_thread = listen_for_keyword_async()
         return Response(
             data={'message': "Listening for keyword..."},
@@ -108,8 +115,8 @@ class ListenForGenericView(APIView):
     def post(self, request):
         global generic_thread, keyword_thread
         # end_listening_for_generic()
-        stop_generic()
         stop_keyword()
+        stop_generic()
         generic_thread = listen_async()
         return Response(
             data={'message': "Listening for generic..."},
@@ -119,7 +126,6 @@ class ListenForGenericView(APIView):
 # do not call in self
 def set_keyword_thread(new_keyword_thread):
     global keyword_thread
-    if keyword_thread: keyword_thread._stop()
     keyword_thread = new_keyword_thread
 
 
@@ -127,3 +133,7 @@ def set_generic_thread(new_generic_thread):
     global generic_thread
     stop_generic()
     generic_thread = new_generic_thread
+
+
+def get_keyword_terminate():
+    return keyword_terminate
