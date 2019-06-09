@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import ActionView, ListenForKeywordView, ListenForGenericView
+from .views import ActionView, ListenForKeywordView, ListenForGenericView, AppsView
 
 urlpatterns = [
     path('actions/<int:step_number>', ActionView.as_view()),
     path('listen/keyword', ListenForKeywordView.as_view()),
     path('listen/generic', ListenForGenericView.as_view()),
+    path('apps', AppsView.as_view()),
 ]

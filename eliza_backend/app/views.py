@@ -1,10 +1,12 @@
 # Create your views here.
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .serializers import AppSerializer
 from src.two_relay.give_answer import answer_question
-from .models import Action
+from .models import Action, App
 
 from src.deprecated_demos.listen import listen_async, end_listening_for_generic
 from src.main import listen_for_keyword_async, end_listening_for_keyword
@@ -152,3 +154,8 @@ def set_generic_thread(new_generic_thread):
 
 def get_keyword_terminate():
     return keyword_terminate
+
+
+class AppsView(ListCreateAPIView):
+    serializer_class = AppSerializer
+    queryset = App.objects.all()

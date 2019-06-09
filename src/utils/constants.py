@@ -30,11 +30,21 @@ LAUNCHER_COMMANDS = {
 
 
 def get_launcher_commands():
-    return LAUNCHER_COMMANDS.keys()
+    from app.models import App
+    apps = App.objects.all()
+    from app.serializers import AppSerializer
+    serializer = AppSerializer(apps, many=True)
+    commands = {app['name']: app['command'] for app in serializer.data}
+    return commands.keys()
 
 
 def get_launcher_command_action(command):
-    return LAUNCHER_COMMANDS[command]
+    from app.models import App
+    apps = App.objects.all()
+    from app.serializers import AppSerializer
+    serializer = AppSerializer(apps, many=True)
+    commands = {app['name']: app['command'] for app in serializer.data}
+    return commands[command]
 
 
 ## Legacy
