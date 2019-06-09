@@ -1,3 +1,4 @@
+from src.one_start.actions.weather import run
 from src.utils.constants import ACTIONS, LAUNCHER_COMMANDS, \
     get_launcher_commands
 
@@ -64,6 +65,10 @@ def what_can_you_do_action():
         """
 
 
+def weather_action():
+    return run()
+
+
 def build_action(name, steps, last_n_prompts, action):
     return {
         'name': name,
@@ -79,6 +84,7 @@ def build_actions():
         'search': build_action("search", 2, ["What would you like me to search for?", "Searching "], search_action),
         'time': build_action("time", 1, [""], time_action),
         'what can you do?': build_action("what can you do?", 1, [""], what_can_you_do_action),
+        'weather': build_action('weather', 1, ["It'll be "], weather_action)
     }
     quick_actions = [{action: build_action(action, 1, ["Done."], resolve_keyword_action(action))} for action in ACTIONS.keys()]
     for action in quick_actions:
