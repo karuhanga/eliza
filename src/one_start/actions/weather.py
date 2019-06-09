@@ -25,7 +25,7 @@ def get_forecast_options():
 
 
 def run(where='Kampala', when=1, how_many=2):
-    where = 'Kampala' if where is 'here' else where
+    where = 'Kampala' if where == 'here' else where
 
     city = where
 
@@ -52,7 +52,7 @@ def run(where='Kampala', when=1, how_many=2):
         (reply.json())["forecast"]["forecastday"]  # extract current object
 
     if pref is PATH_FOR_CURRENT:
-        return (city + " is " + reply["condition"]["text"] + " today, at " + str(
+        return (reply["condition"]["text"] + " today, at " + str(
             reply["temp_c"]) + " degrees. " + "It feels like " + str(
             reply["feelslike_c"]) + " degress though!")
     else:

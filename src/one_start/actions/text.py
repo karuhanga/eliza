@@ -107,7 +107,7 @@ def build_actions():
         'launch': build_action("launch", 2, ["Which application would you like to open?", "Launching "], launch_action),
         'open': build_action("open", 2, ["Which file would you like to open?", "Opening "], open_action),
         'music': build_action("music", 2, ["Which track would you like to play?", "Playing "], music_action),
-        'play video': build_action("play video", 2, ["Which video would you like to play?", "Playing "], play_action),
+        'play video': build_action("play videoom", 2, ["Which video would you like to play?", "Playing "], play_action),
         'search': build_action("search", 2, ["What would you like me to search for?", "Searching "], search_action),
         'time': build_action("time", 1, [""], time_action),
         'what can you do?': build_action("what can you do?", 1, [""], what_can_you_do_action),
