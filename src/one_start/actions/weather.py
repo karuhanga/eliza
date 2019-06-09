@@ -25,6 +25,8 @@ def get_forecast_options():
 
 
 def run(where='Kampala', when=1, how_many=2):
+    where = 'Kampala' if where is 'here' else where
+
     city = where
 
     data["q"] = city
@@ -41,12 +43,10 @@ def run(where='Kampala', when=1, how_many=2):
     try:
         reply = requests.get(pref, params=data)
     except Error.ConnectionError as e:
-        return (
-            "The Service is currently down, please retry in a few seconds :)")
+        return "Couldn't find records for " + city
 
     if not reply.status_code == requests.codes.ok:
-        return (
-            "The Service is currently down, please retry in a few seconds :)")
+        return "Couldn't find records for " + city
 
     reply = (reply.json())["current"] if pref is PATH_FOR_CURRENT else \
         (reply.json())["forecast"]["forecastday"]  # extract current object
